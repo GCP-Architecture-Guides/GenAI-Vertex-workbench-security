@@ -167,13 +167,13 @@ sudo echo https_proxy=https://${google_network_services_gateway.default.addresse
   export PATH="/home/jupyter/.local/bin:$PATH"
   cd /home/jupyter
   echo "Current user: `id`" >> /tmp/notebook_config.log 2>&1
-  echo "Installing python packages" >> /tmp/notebook_config.log 2&1
   su - jupyter -c "git config --global http.proxy http://${google_network_services_gateway.default.addresses[0]}:443" >> /tmp/notebook_config.log 2>&1
   echo "Cloning generative-ai from github" >> /tmp/notebook_config.log 2>&1
-  su - jupyter -c "rm -R -f *"
   su - jupyter -c "export http_proxy='http://${google_network_services_gateway.default.addresses[0]}:443' && export https_proxy='http://${google_network_services_gateway.default.addresses[0]}:443'"
-  su - jupyter -c "wget https://github.com/mgaur10/vertex-ai-dlp/blob/main/genai-nw-security.ipynb" >> /tmp/notebook_config.log 2>&1
-  su - jupyter -c "wget https://github.com/mgaur10/vertex-ai-dlp/blob/main/genai-app-dlp-proxy.ipynb" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "git clone https://github.com/GCP-Architecture-Guides/GenAI-vertex-security.git" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "mv GenAI-vertex-security/assets/*.ipynb /home/jupyter/" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "rm -r -f -- !(*.ipynb)" >> /tmp/notebook_config.log 2>&1
+  echo "Installing python packages" >> /tmp/notebook_config.log 2&1
   su - jupyter -c "pip install --trusted-host pypi.org \
     --trusted-host pypi.python.org --trusted-host \
     files.pythonhosted.org pip setuptools" >> /tmp/notebook_config.log 2>&1
