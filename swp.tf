@@ -172,7 +172,9 @@ sudo echo https_proxy=https://${google_network_services_gateway.default.addresse
   su - jupyter -c "export http_proxy='http://${google_network_services_gateway.default.addresses[0]}:443' && export https_proxy='http://${google_network_services_gateway.default.addresses[0]}:443'"
   su - jupyter -c "git clone https://github.com/GCP-Architecture-Guides/GenAI-vertex-security.git" >> /tmp/notebook_config.log 2>&1
   su - jupyter -c "mv GenAI-vertex-security/assets/*.ipynb /home/jupyter/" >> /tmp/notebook_config.log 2>&1
-  su - jupyter -c "rm -r -f -- !(*.ipynb)" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "rm -r -f src" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "rm -r -f tutorials" >> /tmp/notebook_config.log 2>&1
+  su - jupyter -c "rm -r -f GenAI-vertex-security" >> /tmp/notebook_config.log 2>&1
   echo "Installing python packages" >> /tmp/notebook_config.log 2&1
   su - jupyter -c "pip install --trusted-host pypi.org \
     --trusted-host pypi.python.org --trusted-host \
