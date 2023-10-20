@@ -89,6 +89,7 @@ module "org-policy-requireShieldedVm" {
   enforce     = false
 }
 
+/*
 ## To allow access beyond your org; to be disabled before broader rollout
 module "org-policy-domain-restricted-sharing" {
   source      = "terraform-google-modules/org-policy/google"
@@ -99,7 +100,7 @@ module "org-policy-domain-restricted-sharing" {
   enforce     = false
 }
 
-/*
+
 
 module "org-policy-vmExternalIpAccess" {
   source      = "terraform-google-modules/org-policy/google"
@@ -118,7 +119,7 @@ resource "time_sleep" "wait_for_org_policy" {
     # module.org-policy-vmExternalIpAccess, 
     google_project_service.gcp_apis
   ]
-  create_duration  = "120s"
+  create_duration  = "150s"
   destroy_duration = "30s"
 }
 
