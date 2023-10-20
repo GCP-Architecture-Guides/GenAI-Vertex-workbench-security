@@ -1,4 +1,4 @@
-# SecureVertexWorkbench
+# GenAI Vertex Workbench Network Security Training Demo
 
 
 This is not an officially supported Google product documentation.
