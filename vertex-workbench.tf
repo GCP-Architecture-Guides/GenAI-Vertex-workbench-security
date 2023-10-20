@@ -114,7 +114,7 @@ resource "google_notebooks_instance" "vertex_workbench_instance_2" {
     project      = var.source_image_project #default: deeplearning-platform-release
     image_family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
   }
-  instance_owners = ["admin@manishkgaur.altostrat.com"]
+   instance_owners = var.instance_owners
   service_account = google_service_account.sa.email
 
   shielded_instance_config {
