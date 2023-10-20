@@ -43,8 +43,8 @@ variable "vpc_sc_users" {
 
 variable "instance_owners" {
   description = "User Email address that will own Vertex Workbench"
-  type        = string
-  default     = "username@domain.com"
+  type        = list(any)
+  default     = ["username@domain.com"]
 }
 
 
