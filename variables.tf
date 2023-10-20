@@ -35,10 +35,18 @@ variable "billing_account" {
 
 
 variable "vpc_sc_users" {
-  description = "User Email address that will own Vertex Workbench"
+  description = "User Email address that will need access through VPC-SC"
   type        = list(any)
 #  default     = ["user:username@domain.com"]
 }
+
+
+variable "instance_owners" {
+  description = "User Email address that will own Vertex Workbench"
+  type        = string
+  default     = "username@domain.com"
+}
+
 
 /*****************************
 RECOMMENDED DEFAULTS - DO NOT CHANGE
