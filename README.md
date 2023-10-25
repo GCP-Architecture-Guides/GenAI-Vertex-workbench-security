@@ -31,7 +31,22 @@ Main resources:
 ## How to deploy?
 The following steps should be executed in Cloud Shell in the Google Cloud Console. 
 
-### 1. Get the code
+
+### 1. IAM Permission 
+Grant the user running the terraform below roles.
+``` 
+Access Context Manager Editor
+Billing Account User
+Compute Network Admin
+DNS Administrator
+Folder Creator
+Organization Policy Administrator
+Project Creator
+
+```
+
+
+### 2. Get the code
 Clone this github repository go to the root of the repository.
 
 ``` 
@@ -39,7 +54,7 @@ git clone https://github.com/GCP-Architecture-Guides/GenAI-vertex-security.git
 cd GenAI-vertex-security
 ```
 
-### 2. Deploy the infrastructure using Terraform
+### 3. Deploy the infrastructure using Terraform
 
 
 From the root folder of this repo, run the following commands:
