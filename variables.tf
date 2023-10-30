@@ -24,27 +24,35 @@
 variable "organization_id" {
   type        = string
   description = "organization id required"
-#  default     = "XXXXXXXX"
+  default     = "XXXXX"
 }
+
 
 variable "billing_account" {
   type        = string
   description = "billing account required"
-#  default     = "XXXXX-XXXX-XXXX"
+  default     = "XXXXX-XXXXX-XXXXX"
 }
 
 
 variable "vpc_sc_users" {
   description = "User Email address that will need access through VPC-SC"
   type        = list(any)
-#  default     = ["user:username@domain.com"]
+  default     = ["user:USER@DOMAIN.com"]
+}
+
+
+variable "firewall_ips_enabled" {
+  description = "Set the resources for IPS capability of firewall plus"
+  type        = bool
+default     = false
 }
 
 
 variable "instance_owners" {
   description = "User Email address that will own Vertex Workbench"
   type        = list(any)
-  default     = ["username@domain.com"]
+  default     = ["USER@DOMAIN.com"]
 }
 
 
@@ -53,6 +61,7 @@ RECOMMENDED DEFAULTS - DO NOT CHANGE
 
 unless you really really want to :)
 *****************************/
+
 variable "folder_name" {
   type        = string
   default     = "GenAI Security Training"

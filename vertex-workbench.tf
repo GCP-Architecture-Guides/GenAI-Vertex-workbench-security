@@ -67,7 +67,7 @@ However the terraform would look something like this:
   data_disk_type      = var.data_disk_type      #default: PD_SSD
   data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
   no_remove_data_disk = var.no_remove_data_disk #default: false
-  disk_encryption     = var.disk_encryption     #default: GMEK
+#  disk_encryption     = var.disk_encryption     #default: GMEK
 
   no_public_ip    = var.no_public_ip    #default: true
   no_proxy_access = var.no_proxy_access #default: false
@@ -148,7 +148,7 @@ However the terraform would look something like this:
   data_disk_type      = var.data_disk_type      #default: PD_SSD
   data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
   no_remove_data_disk = var.no_remove_data_disk #default: false
-  disk_encryption     = var.disk_encryption     #default: GMEK
+#  disk_encryption     = var.disk_encryption     #default: GMEK
 
   no_public_ip    = var.no_public_ip    #default: true
   no_proxy_access = var.no_proxy_access #default: false

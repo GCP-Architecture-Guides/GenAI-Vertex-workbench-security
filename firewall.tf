@@ -17,6 +17,7 @@
 ##  This demo code is not built for production workload ##
 
 
+
 # Enable SSH through IAP
 resource "google_compute_firewall" "allow_iap_proxy" {
   name      = "allow-iap-proxy"
@@ -205,9 +206,6 @@ resource "google_compute_network_firewall_policy_rule" "allow_access_proxy" {
 
 
 
-
-
-
 # Network Firewall rule for your instances to download packages private access 
 resource "google_compute_network_firewall_policy_rule" "allow_private_access" {
   project                 = google_project.vertex-project.project_id
@@ -247,7 +245,7 @@ resource "google_compute_network_firewall_policy_rule" "allow_restricted_access"
   priority                = 2000010
   rule_name               = "allow-restricted-access"
   target_service_accounts = ["${google_service_account.sa.email}"]
-
+ 
   match {
     dest_ip_ranges = ["199.36.153.4/30"]
 
@@ -338,6 +336,7 @@ resource "google_compute_network_firewall_policy_rule" "deny_ingress_ipv6" {
     google_compute_network_firewall_policy_association.primary,
   ]
 }
+
 
 
 # Deny egress trafic
