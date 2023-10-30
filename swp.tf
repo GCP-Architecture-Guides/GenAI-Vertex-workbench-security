@@ -133,7 +133,7 @@ resource "google_network_services_gateway" "default" {
 
 resource "null_resource" "create_start_up_file" {
   triggers = {
-#    always_run = "${timestamp()}"
+    #    always_run = "${timestamp()}"
     gateway_ip = "${google_network_services_gateway.default.addresses[0]}"
   }
 

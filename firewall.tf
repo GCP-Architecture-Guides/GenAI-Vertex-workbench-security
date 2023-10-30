@@ -245,7 +245,7 @@ resource "google_compute_network_firewall_policy_rule" "allow_restricted_access"
   priority                = 2000010
   rule_name               = "allow-restricted-access"
   target_service_accounts = ["${google_service_account.sa.email}"]
- 
+
   match {
     dest_ip_ranges = ["199.36.153.4/30"]
 

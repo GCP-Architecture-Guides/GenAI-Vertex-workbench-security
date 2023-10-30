@@ -3,7 +3,7 @@
 ########################### IAM Tags#############
 
 resource "google_tags_tag_key" "key" {
-      count      = var.firewall_ips_enabled == false ? 0 : 1
+  count      = var.firewall_ips_enabled == false ? 0 : 1
   parent     = "projects/${google_project.vertex-project.project_id}"
   short_name = "securevertex-vpc-tags"
 
@@ -12,14 +12,14 @@ resource "google_tags_tag_key" "key" {
   purpose_data = {
     network = "${google_project.vertex-project.project_id}/${var.network_name}"
   }
-  depends_on              = [
+  depends_on = [
     time_sleep.wait_for_org_policy,
-  google_compute_subnetwork.securevertex-subnet-a,
+    google_compute_subnetwork.securevertex-subnet-a,
   ]
 }
 
 resource "google_tags_tag_value" "client_value" {
-        count      = var.firewall_ips_enabled == false ? 0 : 1
+  count       = var.firewall_ips_enabled == false ? 0 : 1
   parent      = "tagKeys/${google_tags_tag_key.key[count.index].name}"
   short_name  = "securevertex-vpc-client"
   description = "Tag for vpc client."
@@ -29,7 +29,7 @@ resource "google_tags_tag_value" "client_value" {
 }
 
 resource "google_tags_tag_value" "server_value" {
-        count      = var.firewall_ips_enabled == false ? 0 : 1
+  count       = var.firewall_ips_enabled == false ? 0 : 1
   parent      = "tagKeys/${google_tags_tag_key.key[count.index].name}"
   short_name  = "securevertex-vpc-server"
   description = "Tag for vpc server."
@@ -46,8 +46,8 @@ resource "google_tags_tag_value" "server_value" {
 
 # Allow access from Internal Load Balancer
 resource "google_compute_network_firewall_policy_rule" "allow_system_updates" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
-  project         = "${google_project.vertex-project.project_id}"
+  count           = var.firewall_ips_enabled == false ? 0 : 1
+  project         = google_project.vertex-project.project_id
   action          = "allow"
   description     = "allow system updates"
   direction       = "EGRESS"
@@ -71,10 +71,10 @@ resource "google_compute_network_firewall_policy_rule" "allow_system_updates" {
 
   match {
     #dest_ip_ranges = [""]
-dest_fqdns = ["ftp.us.debian.org", "deb.debian.org", "packages.cloud.google.com"]
+    dest_fqdns = ["ftp.us.debian.org", "deb.debian.org", "packages.cloud.google.com"]
     layer4_configs {
       ip_protocol = "all"
-    #  ports       = [80]
+      #  ports       = [80]
     }
   }
   depends_on = [
@@ -87,8 +87,8 @@ dest_fqdns = ["ftp.us.debian.org", "deb.debian.org", "packages.cloud.google.com"
 
 # allow ingress
 resource "google_compute_network_firewall_policy_rule" "fwp_allow_ingress" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
-  project         = "${google_project.vertex-project.project_id}"
+  count           = var.firewall_ips_enabled == false ? 0 : 1
+  project         = google_project.vertex-project.project_id
   action          = "allow"
   description     = "allow ingress internal traffic from tagged clients"
   direction       = "INGRESS"
@@ -110,12 +110,12 @@ resource "google_compute_network_firewall_policy_rule" "fwp_allow_ingress" {
   }
 
   match {
-src_ip_ranges = ["10.10.10.0/24"]
-  dest_ip_ranges = ["10.10.10.0/24"]
+    src_ip_ranges  = ["10.10.10.0/24"]
+    dest_ip_ranges = ["10.10.10.0/24"]
 
     layer4_configs {
       ip_protocol = "all"
-    #  ports       = [80]
+      #  ports       = [80]
     }
   }
   depends_on = [
@@ -123,15 +123,15 @@ src_ip_ranges = ["10.10.10.0/24"]
     google_tags_tag_value.client_value,
     google_tags_tag_value.server_value,
     google_compute_subnetwork.securevertex-subnet-a,
-    
+
   ]
 }
 
 
 # allow egress internal traffic from tagged clients
 resource "google_compute_network_firewall_policy_rule" "allow_egress_tagged" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
-  project         = "${google_project.vertex-project.project_id}"
+  count           = var.firewall_ips_enabled == false ? 0 : 1
+  project         = google_project.vertex-project.project_id
   action          = "allow"
   description     = "allow egress internal traffic from tagged clients"
   direction       = "EGRESS"
@@ -154,21 +154,21 @@ resource "google_compute_network_firewall_policy_rule" "allow_egress_tagged" {
   }
 
   match {
-        src_ip_ranges = ["${google_compute_subnetwork.securevertex-subnet-a.ip_cidr_range}"]
-dest_ip_ranges = ["${google_compute_subnetwork.securevertex-subnet-a.ip_cidr_range}"]
+    src_ip_ranges  = ["${google_compute_subnetwork.securevertex-subnet-a.ip_cidr_range}"]
+    dest_ip_ranges = ["${google_compute_subnetwork.securevertex-subnet-a.ip_cidr_range}"]
 
     layer4_configs {
       ip_protocol = "all"
-    #  ports       = [80]
+      #  ports       = [80]
     }
   }
- depends_on = [
+  depends_on = [
     google_compute_network_firewall_policy.primary,
     google_tags_tag_value.client_value,
     google_tags_tag_value.server_value,
     google_compute_subnetwork.securevertex-subnet-a,
     google_network_services_gateway.default,
-    
+
   ]
 }
 
@@ -252,9 +252,9 @@ resource "google_compute_network_firewall_policy_rule" "fwp_allow_restricted_acc
 ########################### Secure Web Proxy #############
 
 resource "google_network_security_url_lists" "fwp_url_list" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count       = var.firewall_ips_enabled == false ? 0 : 1
   name        = "fwplus-url-list"
-  project     = "${google_project.vertex-project.project_id}"
+  project     = google_project.vertex-project.project_id
   location    = var.region
   description = "fwplus-url-list"
   values = [
@@ -265,7 +265,7 @@ resource "google_network_security_url_lists" "fwp_url_list" {
   ]
   depends_on = [
     google_network_security_gateway_security_policy.default,
-        google_tags_tag_value.client_value,
+    google_tags_tag_value.client_value,
     google_tags_tag_value.server_value,
   ]
 }
@@ -275,7 +275,7 @@ resource "google_network_security_url_lists" "fwp_url_list" {
 
 
 resource "google_network_security_gateway_security_policy_rule" "fwp_system_updates" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count                   = var.firewall_ips_enabled == false ? 0 : 1
   name                    = "fwplus-system-updates"
   location                = var.region
   description             = "fwplus-system-updates"
@@ -358,15 +358,15 @@ EOF
 
 # Create Server Instance
 resource "google_compute_instance" "securevertex_www" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
-  project      = "${google_project.vertex-project.project_id}"
+  count        = var.firewall_ips_enabled == false ? 0 : 1
+  project      = google_project.vertex-project.project_id
   name         = "securevertex-${var.zone}-www"
   machine_type = "f1-micro"
   zone         = var.zone
   shielded_instance_config {
     enable_secure_boot = true
   }
-  
+
 
   boot_disk {
     initialize_params {
@@ -380,7 +380,7 @@ resource "google_compute_instance" "securevertex_www" {
   }
 
   #service_account {
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+  # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
   #  email  = data.google_compute_default_service_account.default.email
   #  scopes = ["cloud-platform"]
   #}
@@ -395,11 +395,11 @@ resource "google_compute_instance" "securevertex_www" {
   }
 
   depends_on = [
-   # resource.null_resource.securevertex_startup,
+    # resource.null_resource.securevertex_startup,
     google_compute_network.vpc_network,
     google_compute_subnetwork.securevertex-subnet-a,
     time_sleep.wait_for_swp,
-#   google_compute_packet_mirroring.cloud_ids_packet_mirroring,
+    #   google_compute_packet_mirroring.cloud_ids_packet_mirroring,
   ]
 }
 
@@ -409,15 +409,15 @@ resource "google_compute_instance" "securevertex_www" {
 
 # Create Server Instance
 resource "google_compute_instance" "securevertex_client" {
-count      = var.firewall_ips_enabled == false ? 0 : 1
-  project      = "${google_project.vertex-project.project_id}"
+  count        = var.firewall_ips_enabled == false ? 0 : 1
+  project      = google_project.vertex-project.project_id
   name         = "securevertex-${var.zone}-client"
   machine_type = "f1-micro"
   zone         = var.zone
   shielded_instance_config {
     enable_secure_boot = true
   }
-  
+
 
   boot_disk {
     initialize_params {
@@ -431,22 +431,22 @@ count      = var.firewall_ips_enabled == false ? 0 : 1
   }
 
   #service_account {
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+  # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
   #  email  = data.google_compute_default_service_account.default.email
   #  scopes = ["cloud-platform"]
   #}
 
   metadata_startup_script = file("${path.module}/assets/securevertex-client.sh")
   metadata = {
-  SWP_IP = "${google_network_services_gateway.default.addresses[0]}"
-  TARGET_PRIVATE_IP = "${google_compute_instance.securevertex_www[count.index].network_interface.0.network_ip}"
+    SWP_IP            = "${google_network_services_gateway.default.addresses[0]}"
+    TARGET_PRIVATE_IP = "${google_compute_instance.securevertex_www[count.index].network_interface.0.network_ip}"
   }
   labels = {
     asset_type = "server-machine"
   }
 
   depends_on = [
-  #  resource.null_resource.securevertex_startup,
+    #  resource.null_resource.securevertex_startup,
     google_compute_network.vpc_network,
     google_compute_subnetwork.securevertex-subnet-a,
     time_sleep.wait_for_swp,
@@ -460,30 +460,30 @@ count      = var.firewall_ips_enabled == false ? 0 : 1
 
 
 resource "google_tags_location_tag_binding" "binding_www" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
- #   parent = "//compute.googleapis.com/${google_compute_instance.securevertex_www[count.index].id}"
-    parent    = "//compute.googleapis.com/projects/${google_project.vertex-project.project_id}/zones/${var.zone}/instances/${google_compute_instance.securevertex_www[count.index].instance_id}"
+  count = var.firewall_ips_enabled == false ? 0 : 1
+  #   parent = "//compute.googleapis.com/${google_compute_instance.securevertex_www[count.index].id}"
+  parent = "//compute.googleapis.com/projects/${google_project.vertex-project.project_id}/zones/${var.zone}/instances/${google_compute_instance.securevertex_www[count.index].instance_id}"
 
-    tag_value = "tagValues/${google_tags_tag_value.server_value[count.index].name}"
- location = var.zone
-    depends_on = [
-      google_tags_tag_value.server_value,
-      google_compute_instance.securevertex_www,
-    ]
+  tag_value = "tagValues/${google_tags_tag_value.server_value[count.index].name}"
+  location  = var.zone
+  depends_on = [
+    google_tags_tag_value.server_value,
+    google_compute_instance.securevertex_www,
+  ]
 
 }
 
 resource "google_tags_location_tag_binding" "binding_client" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   #  parent = "//compute.googleapis.com/${google_compute_instance.securevertex_client[count.index].id}"
-    parent    = "//compute.googleapis.com/projects/${google_project.vertex-project.project_id}/zones/${var.zone}/instances/${google_compute_instance.securevertex_client[count.index].instance_id}"
+  parent = "//compute.googleapis.com/projects/${google_project.vertex-project.project_id}/zones/${var.zone}/instances/${google_compute_instance.securevertex_client[count.index].instance_id}"
 
-    tag_value = "tagValues/${google_tags_tag_value.client_value[count.index].name}"
-  location = var.zone
-    depends_on = [
-      google_tags_tag_value.client_value,
-      google_compute_instance.securevertex_client,
-    ]
+  tag_value = "tagValues/${google_tags_tag_value.client_value[count.index].name}"
+  location  = var.zone
+  depends_on = [
+    google_tags_tag_value.client_value,
+    google_compute_instance.securevertex_client,
+  ]
 }
 
 
@@ -549,12 +549,12 @@ resource "null_resource" "fwp_iam_tagging" {
 
 
 resource "null_resource" "fwp_endpoint_profile" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   triggers = {
-    zone = "${var.zone}"
-    org_id = "${var.organization_id}"
+    zone         = "${var.zone}"
+    org_id       = "${var.organization_id}"
     network_name = "${var.network_name}"
-    proj_id = "${google_project.vertex-project.project_id}"
+    proj_id      = "${google_project.vertex-project.project_id}"
   }
 
   provisioner "local-exec" {
@@ -565,8 +565,8 @@ gcloud config unset project
   EOT
   }
 
-   provisioner "local-exec" {
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
 gcloud alpha network-security security-profiles threat-prevention delete securevertex-sp-threat --organization ${self.triggers.org_id} --location=global
@@ -574,19 +574,19 @@ gcloud config unset project
   EOT
   }
 
- depends_on              = [time_sleep.wait_for_org_policy,
- google_compute_network.vpc_network,
+  depends_on = [time_sleep.wait_for_org_policy,
+    google_compute_network.vpc_network,
   ]
 }
 
 
 resource "null_resource" "fwp_endpoint_group" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   triggers = {
-    zone = "${var.zone}"
-    org_id = "${var.organization_id}"
+    zone         = "${var.zone}"
+    org_id       = "${var.organization_id}"
     network_name = "${var.network_name}"
-    proj_id = "${google_project.vertex-project.project_id}"
+    proj_id      = "${google_project.vertex-project.project_id}"
 
   }
 
@@ -598,8 +598,8 @@ gcloud config unset project
   EOT
   }
 
-   provisioner "local-exec" {
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
 gcloud alpha network-security security-profile-groups delete securevertex-spg --organization ${self.triggers.org_id} --location=global --threat-prevention-profile organizations/${self.triggers.org_id}/locations/global/securityProfiles/securevertex-sp-threat
@@ -607,17 +607,17 @@ gcloud config unset project
   EOT
   }
 
- depends_on              = [resource.null_resource.fwp_endpoint_profile]
+  depends_on = [resource.null_resource.fwp_endpoint_profile]
 }
 
 
 resource "null_resource" "fwp_endpoint_endpoint" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   triggers = {
-    zone = "${var.zone}"
-    org_id = "${var.organization_id}"
+    zone         = "${var.zone}"
+    org_id       = "${var.organization_id}"
     network_name = "${var.network_name}"
-    proj_id = "${google_project.vertex-project.project_id}"
+    proj_id      = "${google_project.vertex-project.project_id}"
   }
 
   provisioner "local-exec" {
@@ -628,8 +628,8 @@ gcloud config unset project
   EOT
   }
 
-   provisioner "local-exec" {
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
 gcloud alpha network-security firewall-endpoints delete securevertex-${self.triggers.zone} --zone=${self.triggers.zone} --organization ${self.triggers.org_id}
@@ -637,18 +637,18 @@ gcloud config unset project
   EOT
   }
 
- depends_on              = [resource.null_resource.fwp_endpoint_group]
+  depends_on = [resource.null_resource.fwp_endpoint_group]
 }
 
 
 
 resource "null_resource" "fwp_endpoint_association" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   triggers = {
-    zone = "${var.zone}"
-    org_id = "${var.organization_id}"
+    zone         = "${var.zone}"
+    org_id       = "${var.organization_id}"
     network_name = "${var.network_name}"
-    proj_id = "${google_project.vertex-project.project_id}"
+    proj_id      = "${google_project.vertex-project.project_id}"
   }
 
   provisioner "local-exec" {
@@ -659,8 +659,8 @@ gcloud config unset project
   EOT
   }
 
-   provisioner "local-exec" {
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
 gcloud alpha network-security firewall-endpoint-associations delete securevertex-association --zone ${self.triggers.zone} --network=${self.triggers.network_name} --endpoint securevertex-${self.triggers.zone} --organization ${self.triggers.org_id}
@@ -668,7 +668,7 @@ gcloud config unset project
   EOT
   }
 
- depends_on              = [resource.null_resource.fwp_endpoint_endpoint]
+  depends_on = [resource.null_resource.fwp_endpoint_endpoint]
 
 }
 
@@ -683,14 +683,14 @@ gcloud beta compute network-firewall-policies rules update 500 \
 
 
 resource "null_resource" "fwp_rule_update_apply_l7" {
-  count      = var.firewall_ips_enabled == false ? 0 : 1
+  count = var.firewall_ips_enabled == false ? 0 : 1
   triggers = {
-    zone = "${var.zone}"
-    org_id = "${var.organization_id}"
-    network_name = "${var.network_name}"
-    proj_id = "${google_project.vertex-project.project_id}"
+    zone            = "${var.zone}"
+    org_id          = "${var.organization_id}"
+    network_name    = "${var.network_name}"
+    proj_id         = "${google_project.vertex-project.project_id}"
     firewall_policy = "${google_compute_network_firewall_policy.primary.name}"
-    rule_name = "${google_compute_network_firewall_policy_rule.fwp_allow_ingress[count.index].rule_name}"
+    rule_name       = "${google_compute_network_firewall_policy_rule.fwp_allow_ingress[count.index].rule_name}"
   }
 
   provisioner "local-exec" {
@@ -701,8 +701,8 @@ gcloud config unset project
   EOT
   }
 
-   provisioner "local-exec" {
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
 gcloud compute network-firewall-policies rules update 500 --description "allow ingress internal traffic from tagged clients" \
@@ -719,10 +719,10 @@ gcloud config unset project
   EOT
   }
 
- depends_on              = [
-  resource.null_resource.fwp_endpoint_endpoint,
- google_compute_network_firewall_policy_rule.fwp_allow_ingress,
- resource.null_resource.fwp_endpoint_association,
- ]
+  depends_on = [
+    resource.null_resource.fwp_endpoint_endpoint,
+    google_compute_network_firewall_policy_rule.fwp_allow_ingress,
+    resource.null_resource.fwp_endpoint_association,
+  ]
 
 }
