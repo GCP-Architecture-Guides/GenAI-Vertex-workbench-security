@@ -20,7 +20,6 @@
 
 
 variable "organization_id" {
-
 }
 
 
@@ -30,49 +29,33 @@ variable "billing_account" {
 variable "folder_id" {
 }
 
-
-
 variable "project_name" {
-
 }
 
 variable "region" {
-
 }
 
 variable "random_string" {
-
 }
 
-
-
-
-
 variable "skip_delete" {
-
 }
 
 variable "labels" {
-
 }
 
 variable "notebook_srv_account" {
-
 }
 
-
 variable "vpc_sc_users" {
-
 }
 
 
 variable "vertex_project_number" {
-
 }
-variable "srv1" {
 
+variable "srv1" {
 }
 
 variable "srv2" {
-
 }

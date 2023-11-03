@@ -24,14 +24,14 @@
 variable "organization_id" {
   type        = string
   description = "organization id required"
-  default     = "XXXXX"
+  default     = "XXXXXXXXXXXXX"
 }
 
 
 variable "billing_account" {
   type        = string
   description = "billing account required"
-  default     = "XXXXX-XXXXX-XXXXX"
+  default     = "XXXXXX-XXXXXXX-XXXXXX"
 }
 
 
@@ -42,19 +42,18 @@ variable "vpc_sc_users" {
 }
 
 
-variable "firewall_ips_enabled" {
-  description = "Set the resources for IPS capability of firewall plus"
-  type        = bool
-  default     = false
-}
-
-
 variable "instance_owners" {
   description = "User Email address that will own Vertex Workbench"
   type        = list(any)
   default     = ["USER@DOMAIN.com"]
 }
 
+
+variable "firewall_ips_enabled" {
+  description = "Set the resources for IPS capability of firewall plus"
+  type        = bool
+default     = false
+}
 
 /*****************************
 RECOMMENDED DEFAULTS - DO NOT CHANGE
@@ -72,6 +71,36 @@ variable "project_name" {
   type        = string
   default     = "vertex-security"
   description = "vertex workbench project to be created"
+}
+
+variable "region" {
+  description = "what region to deploy to"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "zone" {
+  description = "The GCP zone to create the instance in"
+  type        = string
+  default     = "us-central1-b"
+}
+
+variable "subnet_ip_cidr" {
+  description = "The GCP zone to create the instance in"
+  type        = string
+  default     = "10.10.10.0/24"
+}
+
+variable "swp_gateway_ip" {
+  description = "The GCP zone to create the instance in"
+  type        = string
+  default     = "10.10.10.9" # must be with in subnet_ip_cidr range
+}
+
+variable "proxy_subnet_ip_cidr" {
+  description = "The GCP zone to create the instance in"
+  type        = string
+  default     = "10.10.50.0/26"
 }
 
 
@@ -92,18 +121,6 @@ variable "environment" {
 variable "skip_delete" {
   description = " If true, the Terraform resource can be deleted without deleting the Project via the Google API."
   default     = "false"
-}
-
-variable "region" {
-  description = "what region to deploy to"
-  type        = string
-  default     = "us-east1"
-}
-
-variable "zone" {
-  description = "The GCP zone to create the instance in"
-  type        = string
-  default     = "us-east1-b"
 }
 
 variable "roles" {

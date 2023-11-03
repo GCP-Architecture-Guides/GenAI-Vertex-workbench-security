@@ -62,5 +62,5 @@ resource "google_project_service" "data_gcp_apis" {
 resource "time_sleep" "wait_enable_service_data" {
   depends_on       = [google_project_service.data_gcp_apis]
   create_duration  = "100s"
-  destroy_duration = "100s"
+  destroy_duration = "420s"
 }

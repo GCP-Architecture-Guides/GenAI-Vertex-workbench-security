@@ -38,7 +38,7 @@ resource "google_compute_firewall" "allow_iap_proxy" {
   ]
 }
 
-/*
+/* # If applied this rule will take priority over FW policy and block all egress
 resource "google_compute_firewall" "deny_egress_ip4" {
   name      = "deny-egress-ip4"
   network   = google_compute_network.vpc_network.self_link
@@ -88,6 +88,7 @@ resource "google_compute_network_firewall_policy" "primary" {
   ]
 }
 
+
 resource "google_compute_network_firewall_policy_association" "primary" {
   name              = "association"
   attachment_target = google_compute_network.vpc_network.id
@@ -125,7 +126,7 @@ resource "google_compute_network_firewall_policy_rule" "deny_ingress_ipv4_threat
 }
 
 
-# Deny ingress trafic
+# Deny egress trafic
 resource "google_compute_network_firewall_policy_rule" "deny_egress_ipv4_threat" {
   project         = google_project.vertex-project.project_id
   action          = "deny"
@@ -245,7 +246,7 @@ resource "google_compute_network_firewall_policy_rule" "allow_restricted_access"
   priority                = 2000010
   rule_name               = "allow-restricted-access"
   target_service_accounts = ["${google_service_account.sa.email}"]
-
+ 
   match {
     dest_ip_ranges = ["199.36.153.4/30"]
 
@@ -326,7 +327,7 @@ resource "google_compute_network_firewall_policy_rule" "deny_ingress_ipv6" {
   #  target_service_accounts = ["emailAddress:my@service-account.com"]
 
   match {
-    src_ip_ranges = ["0::0/0"]
+    src_ip_ranges = ["::/0"]
 
     layer4_configs {
       ip_protocol = "all"
@@ -379,7 +380,7 @@ resource "google_compute_network_firewall_policy_rule" "deny_egress_ipv6" {
   #  target_service_accounts = ["emailAddress:my@service-account.com"]
 
   match {
-    dest_ip_ranges = ["0::0/0"]
+    dest_ip_ranges = ["::/0"]
 
     layer4_configs {
       ip_protocol = "all"

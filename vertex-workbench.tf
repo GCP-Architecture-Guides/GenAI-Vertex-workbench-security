@@ -67,7 +67,7 @@ However the terraform would look something like this:
   data_disk_type      = var.data_disk_type      #default: PD_SSD
   data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
   no_remove_data_disk = var.no_remove_data_disk #default: false
-  #  disk_encryption     = var.disk_encryption     #default: GMEK
+#  disk_encryption     = var.disk_encryption     #default: GMEK
 
   no_public_ip    = var.no_public_ip    #default: true
   no_proxy_access = var.no_proxy_access #default: false
@@ -114,7 +114,7 @@ resource "google_notebooks_instance" "vertex_workbench_instance_2" {
     project      = var.source_image_project #default: deeplearning-platform-release
     image_family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
   }
-  instance_owners = var.instance_owners
+   instance_owners = var.instance_owners
   service_account = google_service_account.sa.email
 
   shielded_instance_config {
@@ -148,7 +148,7 @@ However the terraform would look something like this:
   data_disk_type      = var.data_disk_type      #default: PD_SSD
   data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
   no_remove_data_disk = var.no_remove_data_disk #default: false
-  #  disk_encryption     = var.disk_encryption     #default: GMEK
+#  disk_encryption     = var.disk_encryption     #default: GMEK
 
   no_public_ip    = var.no_public_ip    #default: true
   no_proxy_access = var.no_proxy_access #default: false

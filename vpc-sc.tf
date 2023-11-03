@@ -71,7 +71,10 @@ resource "google_access_context_manager_access_level" "service_account" {
 
 data "google_project" "data_project" {
   project_id = "data-project-${random_id.random_suffix.hex}"
-  depends_on = [time_sleep.wait_for_org_policy]
+  depends_on = [
+    time_sleep.wait_for_org_policy,
+    module.data_project.google_project,
+  ]
 }
 
 
@@ -132,6 +135,7 @@ resource "google_access_context_manager_service_perimeter" "service_perimeter" {
 
       egress_to {
         resources = ["projects/${data.google_project.data_project.number}"]
+ #         resources = ["projects/${module.data_project.google_project.data_vertex-project.number}"]
         operations {
           service_name = "*"
         }
@@ -143,6 +147,7 @@ resource "google_access_context_manager_service_perimeter" "service_perimeter" {
   depends_on = [
     time_sleep.vpc_sc_wait,
     data.google_project.data_project,
+#module.data_project.google_project.data_vertex-project,
   ]
 }
 

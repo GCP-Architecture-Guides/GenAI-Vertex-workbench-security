@@ -28,7 +28,7 @@ resource "google_compute_network" "vpc_network" {
 resource "google_compute_subnetwork" "securevertex-subnet-a" {
   project                  = google_project.vertex-project.project_id
   name                     = var.subnet_name
-  ip_cidr_range            = "10.10.10.0/24"
+  ip_cidr_range            = var.subnet_ip_cidr
   region                   = var.region #default: us-central1
   private_ip_google_access = "true"
   network                  = google_compute_network.vpc_network.name
@@ -44,7 +44,7 @@ resource "google_compute_subnetwork" "securevertex-subnet-a" {
 resource "google_compute_subnetwork" "secure_proxy_subnet" {
   project       = google_project.vertex-project.project_id
   name          = "secure-proxy-subnet"
-  ip_cidr_range = "10.10.50.0/26"
+  ip_cidr_range = var.proxy_subnet_ip_cidr
   region        = var.region #default: us-central1
   #  private_ip_google_access = "true"
   network = google_compute_network.vpc_network.name
@@ -59,7 +59,7 @@ resource "google_compute_subnetwork" "secure_proxy_subnet" {
 }
 
 
-## Enable to allow direct access to internet through Cloud NAT and Router
+## Enable to allow direct access to internet through Cloud NAT and Router This will bypass SWP 
 /*
 resource "google_compute_router" "vertex-vpc-router" {
   name       = "vertex-vpc-router"

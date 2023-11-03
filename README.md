@@ -24,6 +24,7 @@ Main resources:
 - Two VPC Service Control Permieter for each project with allowed ingress and egress rules
 - Private access for Goolge APIs
 - Vertex AI Workbench Instance
+- Optional: Firewall+ endpoint with server and client compute instances
 
 
 
@@ -63,6 +64,7 @@ export TF_VAR_organization_id=[YOUR_ORGANIZATION_ID]
 export TF_VAR_billing_account=[YOUR_BILLING_ID]
 export TF_VAR_vpc_sc_users=["user:NAME1@DOMAIN.com"]
 export TF_VAR_instance_owners=["NAME1@DOMAIN.com"]
+export TF_VAR_firewall_ips_enabled = [false] ## Default is false; set it to 'true' to enable firewall+ resources
 terraform init
 terraform apply
 terraform apply --refresh-only

@@ -55,16 +55,15 @@ resource "null_resource" "create_certificate1" {
   ]
 }
 
+
 resource "google_network_security_gateway_security_policy" "default" {
   name        = var.policy_name
   location    = var.region
   description = "my-gateway-security-policy"
   project     = google_project.vertex-project.project_id
   depends_on = [
-    #    google_certificate_manager_certificate.default,
     resource.null_resource.create_certificate1,
   ]
-
 }
 
 
@@ -90,7 +89,6 @@ resource "google_network_security_url_lists" "default" {
 
 
 
-
 resource "google_network_security_gateway_security_policy_rule" "default" {
   name                    = var.rule_name
   location                = var.region
@@ -112,7 +110,7 @@ resource "google_network_services_gateway" "default" {
   name                                 = var.gateway_name
   location                             = var.region
   project                              = google_project.vertex-project.project_id
-  addresses                            = ["10.10.10.9"]
+  addresses                            = [var.swp_gateway_ip]
   type                                 = "SECURE_WEB_GATEWAY"
   ports                                = [443]
   scope                                = "samplescope"
@@ -133,7 +131,7 @@ resource "google_network_services_gateway" "default" {
 
 resource "null_resource" "create_start_up_file" {
   triggers = {
-    #    always_run = "${timestamp()}"
+#    always_run = "${timestamp()}"
     gateway_ip = "${google_network_services_gateway.default.addresses[0]}"
   }
 

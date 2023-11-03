@@ -9,7 +9,7 @@ sudo touch /etc/apt/apt.conf.d/99verify-peer.conf
 sudo echo "Acquire { https::Verify-Peer false }" | sudo tee /etc/apt/apt.conf.d/99verify-peer.conf
 sudo apt-get update
 sudo apt-get install apache2 tcpdump iperf3 -y
-sleep 600
+sleep 1200
 counter=50
     TARGET_PRIVATE_IP=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/TARGET_PRIVATE_IP" -H "Metadata-Flavor: Google")
 while [ $counter -gt 0 ];

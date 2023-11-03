@@ -20,34 +20,5 @@
 ##  This code creates demo environment for GenAI Security for Vertex AI   ##
 ##  This demo code is not built for production workload ##
 
-
 /*
-resource "google_storage_bucket" "notebook_bucket" {
-  project                     = google_project.vertex-project.project_id
-  name                        = "notebook-${google_project.vertex-project.project_id}-${random_id.random_suffix.hex}"
-  location                    = var.region #default" us-central1
-  force_destroy               = true
-  uniform_bucket_level_access = true
-  depends_on                  = [time_sleep.wait_enable_service_data]
-}
-
-
-
-resource "google_storage_bucket_iam_binding" "notebook_bucket_iam" {
-  bucket = google_storage_bucket.notebook_bucket.name
-  role   = "roles/storage.admin"
-  members = [
-    "serviceAccount:${google_service_account.sa.email}"
-  ]
-}
-
-
-# Add startup file to bucket
-resource "google_storage_bucket_object" "notebook" {
-  name       = "install_script.sh"
-  bucket     = google_storage_bucket.notebook_bucket.name
-  source     = "${path.module}/assets/install_script.sh"
-  depends_on = [google_storage_bucket.notebook_bucket]
-}
-
 */
