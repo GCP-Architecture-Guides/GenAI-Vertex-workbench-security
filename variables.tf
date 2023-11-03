@@ -52,7 +52,7 @@ variable "instance_owners" {
 variable "firewall_ips_enabled" {
   description = "Set the resources for IPS capability of firewall plus"
   type        = bool
-default     = false
+default     = false # set it to true to deploy Firewall+ resources
 }
 
 /*****************************
