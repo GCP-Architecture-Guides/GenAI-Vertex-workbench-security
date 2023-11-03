@@ -50,8 +50,8 @@ Project Creator
 Clone this github repository go to the root of the repository.
 
 ``` 
-git clone https://github.com/GCP-Architecture-Guides/GenAI-vertex-security.git
-cd GenAI-vertex-security
+git clone https://github.com/GCP-Architecture-Guides/GenAI-Vertex-workbench-security.git
+cd GenAI-Vertex-workbench-security
 ```
 
 ### 3. Deploy the infrastructure using Terraform
