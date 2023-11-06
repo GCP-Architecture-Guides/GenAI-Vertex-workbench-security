@@ -90,3 +90,17 @@ From the root folder of this repo, run the following command:
 terraform destroy
 ```
 **Note:** If you get an error while destroying, it is likely due to delay in VPC-SC destruction rollout. Just execute terraform destroy again, to continue clean-up.
+
+## Contributing
+
+Refer to the [contribution guidelines](./CONTRIBUTING.md) for
+information on contributing to this module.
+
+[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
+[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
+[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
+[terraform]: https://www.terraform.io/downloads.html
+
+## Security Disclosures
+
+Please see our [security disclosure process](./SECURITY.md).
