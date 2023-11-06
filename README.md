@@ -33,8 +33,8 @@ Main resources:
 The following steps should be executed in Cloud Shell in the Google Cloud Console. 
 
 ### Deployment Duration
-Default configuration without FW+ (IPS): 25 mins (approx.)
-Deployment with FW+ (IPS): 45 mins (approx.)
+- Default configuration without FW+ (IPS): 25 mins (approx.)
+- Deployment with FW+ (IPS): 45 mins (approx.)
 
 ### 1. IAM Permission 
 Grant the user running the terraform below roles.
