@@ -1,3 +1,8 @@
+```
+This is not an officially supported Google product.
+This code creates PoC demo environment for CSA Network Firewall microsegmentation. This demo code is not built for production workload. 
+```
+
 # GenAI Vertex Workbench Network Security Training Demo
 
 
