@@ -94,7 +94,7 @@ variable "subnet_ip_cidr" {
 variable "swp_gateway_ip" {
   description = "The GCP zone to create the instance in"
   type        = string
-  default     = "10.10.10.9" # must be with in subnet_ip_cidr range
+  default     = "10.10.10.9"
 }
 
 variable "proxy_subnet_ip_cidr" {
@@ -158,7 +158,8 @@ variable "secure_boot" {
 variable "source_image_family" {
   description = "The OS Image family"
   type        = string
-  default     = "common-cu110-notebooks"
+  default     = "common-cu110-notebooks-debian-9"
+  #"common-cu110-notebooks"
   #"common-cpu-notebooks-ubuntu-2004"
   #gcloud compute images list --project deeplearning-platform-release
 }

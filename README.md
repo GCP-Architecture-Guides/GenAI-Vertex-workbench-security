@@ -1,8 +1,3 @@
-```
-This is not an officially supported Google product.
-This code creates PoC demo environment for CSA Network Firewall microsegmentation. This demo code is not built for production workload. 
-```
-
 # GenAI Vertex Workbench Network Security Training Demo
 
 
@@ -37,9 +32,6 @@ Main resources:
 ## How to deploy?
 The following steps should be executed in Cloud Shell in the Google Cloud Console. 
 
-### Deployment Duration
-- Default configuration without FW+ (IPS): 25 mins (approx.)
-- Deployment with FW+ (IPS): 45 mins (approx.)
 
 ### 1. IAM Permission 
 Grant the user running the terraform below roles.
@@ -58,8 +50,8 @@ Project Creator
 Clone this github repository go to the root of the repository.
 
 ``` 
-git clone https://github.com/GCP-Architecture-Guides/GenAI-Vertex-workbench-security.git
-cd GenAI-Vertex-workbench-security
+git clone https://github.com/GCP-Architecture-Guides/GenAI-vertex-security.git
+cd GenAI-vertex-security
 ```
 
 ### 3. Deploy the infrastructure using Terraform
@@ -95,17 +87,3 @@ From the root folder of this repo, run the following command:
 terraform destroy
 ```
 **Note:** If you get an error while destroying, it is likely due to delay in VPC-SC destruction rollout. Just execute terraform destroy again, to continue clean-up.
-
-## Contributing
-
-Refer to the [contribution guidelines](./CONTRIBUTING.md) for
-information on contributing to this module.
-
-[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
-[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
-[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
-[terraform]: https://www.terraform.io/downloads.html
-
-## Security Disclosures
-
-Please see our [security disclosure process](./SECURITY.md).

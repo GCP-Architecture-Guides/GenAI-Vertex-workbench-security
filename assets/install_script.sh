@@ -23,7 +23,7 @@ sudo echo http_proxy=https://10.10.10.9:443/ >> /etc/environment
 sudo echo https_proxy=https://10.10.10.9:443/ >> /etc/environment
   echo "Current user: uid=1000(admin_) gid=1000(admin_) groups=1000(admin_),4(adm),27(sudo),999(docker)" >> /tmp/notebook_config.log 2>&1
   echo "Changing dir to /home/jupyter" >> /tmp/notebook_config.log 2>&1
-  export PATH="/home/jupyter/.local/bin:/home/admin_/.local/bin:/opt/gradle/bin:/opt/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/rvm/bin:/google/go_appengine:/google/google_appengine:/google/migrate/anthos/:/home/admin_/.gems/bin:/usr/local/rvm/bin:/home/admin_/gopath/bin:/google/gopath/bin:/google/flutter/bin:/usr/local/nvm/versions/node/v18.18.2/bin"
+  export PATH="/home/jupyter/.local/bin:/home/admin_/.local/bin:/opt/gradle/bin:/opt/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/rvm/bin:/google/go_appengine:/google/google_appengine:/google/migrate/anthos/:/home/admin_/.gems/bin:/usr/local/rvm/bin:/home/admin_/gopath/bin:/google/gopath/bin:/google/flutter/bin:/usr/local/nvm/versions/node/v20.11.1/bin"
   cd /home/jupyter
   echo "Current user: uid=1000(admin_) gid=1000(admin_) groups=1000(admin_),4(adm),27(sudo),999(docker)" >> /tmp/notebook_config.log 2>&1
   su - jupyter -c "git config --global http.proxy http://10.10.10.9:443" >> /tmp/notebook_config.log 2>&1
