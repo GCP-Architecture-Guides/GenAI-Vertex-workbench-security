@@ -25,7 +25,8 @@ resource "random_id" "random_suffix" {
 # Create Folder in GCP Organization
 resource "google_folder" "genai_training" {
   display_name = var.folder_name
-  parent       = "organizations/${var.organization_id}"
+  # parent       = "organizations/${var.organization_id}"
+  parent       = "folders/276635808742"
 }
 
 

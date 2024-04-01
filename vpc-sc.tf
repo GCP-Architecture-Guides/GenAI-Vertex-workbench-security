@@ -22,7 +22,8 @@ resource "time_sleep" "vpc_access_policy_wait" {
   create_duration  = "45s"
   destroy_duration = "60s"
   depends_on = [
-    resource.null_resource.set_secure_boot,
+  #  resource.null_resource.set_secure_boot,
+    time_sleep.wait_for_notebook,
     google_storage_bucket.notebook_bucket,
     google_storage_bucket.bucket,
     google_network_services_gateway.default,

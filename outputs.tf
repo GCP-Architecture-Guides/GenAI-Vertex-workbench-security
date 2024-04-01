@@ -37,7 +37,7 @@ output "_3_success_curl" {
 
 output "_4_notebook_url_access" {
   description = "The proxy endpoint that is used to access the Jupyter notebook. Only returned when the resource is in a PROVISIONED state. If needed you can utilize terraform apply -refresh-only to await the population of this value."
-  value       = "https://${google_notebooks_instance.vertex_workbench_instance.proxy_uri}"
+  value       = "https://${google_workbench_instance.vertex_workbench_instance.proxy_uri}"
 }
 
 

@@ -24,25 +24,27 @@
     can be found in variables.tf under
     the root directory
 ************************************/
-resource "google_notebooks_instance" "vertex_workbench_instance" {
+
+/*************************************
+    Vertex AI Workbench Instance
+
+    all variables and their defaults can be
+    can be found in variables.tf under
+    the root directory
+************************************/
+resource "google_workbench_instance" "vertex_workbench_instance" {
   project      = google_project.vertex-project.project_id
   name         = var.workbench_name #default: securevertex-notebook
   location     = var.zone           #default: us-central1-a
+  disable_proxy_access = var.no_proxy_access #default: false
+
+  gce_setup {
   machine_type = var.machine_type   #default: c2d-standard-2 (2 vCPU, 8GB RAM)
-  vm_image {
+    vm_image {
     project      = var.source_image_project #default: deeplearning-platform-release
-    image_family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
-  }
-  #  instance_owners = [google_service_account.sa.email]
-  service_account = google_service_account.sa.email
-
-  shielded_instance_config {
-    enable_secure_boot          = var.secure_boot #default: true
-    enable_integrity_monitoring = true
-    enable_vtpm                 = true
-  }
-
-  /*****************************************************
+    family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
+    }
+/*****************************************************
 no GPU enabled on the workbench instance for this template. 
 However the terraform would look something like this:
 
@@ -58,25 +60,38 @@ However the terraform would look something like this:
   
 ******************************************************/
 
+  
+    #  instance_owners = [google_service_account.sa.email]
+  service_accounts {
+    email = google_service_account.sa.email
+  }
 
+   shielded_instance_config {
+    enable_secure_boot          = var.secure_boot #default: true
+    enable_integrity_monitoring = true
+    enable_vtpm                 = true
+  }
 
-  install_gpu_driver = var.enable_gpu #default: false
+    #install_gpu_driver = var.enable_gpu #default: false
+boot_disk {
+  disk_type      = var.boot_disk_type      #default: PD_SSD
+  disk_size_gb   = var.boot_disk_size_gb   #default 150 GB
+  #  disk_encryption     = var.disk_encryption     #default: GMEK
+  }
 
-  boot_disk_type      = var.boot_disk_type      #default: PD_SSD
-  boot_disk_size_gb   = var.boot_disk_size_gb   #default 100 GB
-  data_disk_type      = var.data_disk_type      #default: PD_SSD
-  data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
-  no_remove_data_disk = var.no_remove_data_disk #default: false
+  data_disks {
+  disk_type      = var.data_disk_type      #default: PD_SSD
+  disk_size_gb   = var.data_disk_size_gb   #default: 150 GB
+#  no_remove_data_disk = var.no_remove_data_disk #default: false Not supported
 #  disk_encryption     = var.disk_encryption     #default: GMEK
+  }
 
-  no_public_ip    = var.no_public_ip    #default: true
-  no_proxy_access = var.no_proxy_access #default: false
-
+  disable_public_ip    = var.no_public_ip    #default: true
+  network_interfaces {
   network             = google_compute_network.vpc_network.id
   subnet              = google_compute_subnetwork.securevertex-subnet-a.id
-  post_startup_script = "gs://${google_storage_bucket.notebook_bucket.name}/${google_storage_bucket_object.notebook.name}"
+  }
   //labels = merge(local.required_labels, var.labels)
-
   metadata = {
     notebook-disable-root      = "true"
     notebook-disable-downloads = "true"
@@ -91,7 +106,12 @@ However the terraform would look something like this:
     DATA_PROJ_ID               = "${data.google_project.data_project.project_id}"
     DATA_BUCKET                = "data-bucket-${random_id.random_suffix.hex}"
     PROXY_IP                   = "${google_network_services_gateway.default.addresses[0]}:443"
+    post_startup_script = "gs://${google_storage_bucket.notebook_bucket.name}/${google_storage_bucket_object.notebook.name}"
   }
+  }
+
+
+
   depends_on = [
     google_storage_bucket.bucket,
     google_storage_bucket.notebook_bucket,
@@ -104,18 +124,24 @@ However the terraform would look something like this:
   ]
 }
 
-
-resource "google_notebooks_instance" "vertex_workbench_instance_2" {
+/*
+resource "google_workbench_instance" "vertex_workbench_instance_2" {
   project      = google_project.vertex-project.project_id
   name         = "${var.workbench_name}-2" #default: securevertex-notebook
   location     = var.zone                  #default: us-central1-a
+  disable_proxy_access = var.no_proxy_access #default: false
+
+   instance_owners = var.instance_owners
+  gce_setup {
   machine_type = var.machine_type          #default: c2d-standard-2 (2 vCPU, 8GB RAM)
+
   vm_image {
     project      = var.source_image_project #default: deeplearning-platform-release
-    image_family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
+    family = var.source_image_family  #default: common-cpu-notebooks-ubuntu-2004
+
+  service_accounts {
+    email = google_service_account.sa.email
   }
-   instance_owners = var.instance_owners
-  service_account = google_service_account.sa.email
 
   shielded_instance_config {
     enable_secure_boot          = var.secure_boot #default: true
@@ -123,39 +149,27 @@ resource "google_notebooks_instance" "vertex_workbench_instance_2" {
     enable_vtpm                 = true
   }
 
-  /*****************************************************
-no GPU enabled on the workbench instance for this template. 
-However the terraform would look something like this:
 
 
-  dynamic "accelerator_config" {
-    for_each = var.enable_gpu ? [1] : []
-    content {
-      core_count = var.accelerator_config_core_count
-      type       = var.accelerator_config_type
-    }
+  #install_gpu_driver = var.enable_gpu #default: false
+
+  #install_gpu_driver = var.enable_gpu #default: false
+boot_disk {
+  disk_type      = var.boot_disk_type      #default: PD_SSD
+  disk_size_gb   = var.boot_disk_size_gb   #default 150 GB
   }
 
-  
-******************************************************/
-
-
-
-  install_gpu_driver = var.enable_gpu #default: false
-
-  boot_disk_type      = var.boot_disk_type      #default: PD_SSD
-  boot_disk_size_gb   = var.boot_disk_size_gb   #default 100 GB
-  data_disk_type      = var.data_disk_type      #default: PD_SSD
-  data_disk_size_gb   = var.data_disk_size_gb   #default: 100 GB
-  no_remove_data_disk = var.no_remove_data_disk #default: false
+  data_disks {
+  disk_type      = var.data_disk_type      #default: PD_SSD
+  disk_size_gb   = var.data_disk_size_gb   #default: 150 GB
+ # no_remove_data_disk = var.no_remove_data_disk #default: false
 #  disk_encryption     = var.disk_encryption     #default: GMEK
-
-  no_public_ip    = var.no_public_ip    #default: true
-  no_proxy_access = var.no_proxy_access #default: false
-
+  }
+  disable_public_ip    = var.no_public_ip    #default: true
+  network_interfaces {
   network             = google_compute_network.vpc_network.id
   subnet              = google_compute_subnetwork.securevertex-subnet-a.id
-  post_startup_script = "gs://${google_storage_bucket.notebook_bucket.name}/${google_storage_bucket_object.notebook.name}"
+  }
   //labels = merge(local.required_labels, var.labels)
 
   metadata = {
@@ -172,6 +186,10 @@ However the terraform would look something like this:
     DATA_PROJ_ID               = "${data.google_project.data_project.project_id}"
     DATA_BUCKET                = "data-bucket-${random_id.random_suffix.hex}"
     PROXY_IP                   = "${google_network_services_gateway.default.addresses[0]}:443"
+    post_startup_script = "gs://${google_storage_bucket.notebook_bucket.name}/${google_storage_bucket_object.notebook.name}"
+
+  }
+  }
   }
   depends_on = [
     google_storage_bucket.bucket,
@@ -181,15 +199,18 @@ However the terraform would look something like this:
     time_sleep.wait_for_swp,
   ]
 }
+*/
 
 # Wait delay after notebook
 resource "time_sleep" "wait_for_notebook" {
-  depends_on      = [google_notebooks_instance.vertex_workbench_instance]
+  depends_on      = [google_workbench_instance.vertex_workbench_instance]
   create_duration = "60s"
 }
 
 
 
+
+/*
 resource "null_resource" "set_secure_boot" {
   count = var.enable_gpu ? 1 : 0
   triggers = {
@@ -228,3 +249,4 @@ resource "null_resource" "set_secure_boot_instance_2" {
   }
   depends_on = [time_sleep.wait_for_notebook]
 }
+*/

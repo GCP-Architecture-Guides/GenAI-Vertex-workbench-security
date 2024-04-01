@@ -52,7 +52,7 @@ variable "instance_owners" {
 variable "firewall_ips_enabled" {
   description = "Set the resources for IPS capability of firewall plus"
   type        = bool
-default     = false # set it to 'true' to deploy Firewall+ resources
+default     = false
 }
 
 /*****************************
@@ -144,7 +144,7 @@ variable "workbench_name" {
 variable "machine_type" {
   type        = string
   description = "compute engine machine type that workbench will run on"
-  default     = "c2d-standard-2"
+  default     = "e2-standard-2"
 
 }
 
@@ -158,10 +158,7 @@ variable "secure_boot" {
 variable "source_image_family" {
   description = "The OS Image family"
   type        = string
-  default     = "common-cu110-notebooks-debian-9"
-  #"common-cu110-notebooks"
-  #"common-cpu-notebooks-ubuntu-2004"
-  #gcloud compute images list --project deeplearning-platform-release
+  default     = "tf-latest-cpu"
 }
 
 variable "source_image_project" {
@@ -169,6 +166,7 @@ variable "source_image_project" {
   type        = string
   default     = "deeplearning-platform-release"
 }
+
 
 variable "enable_gpu" {
   type        = bool

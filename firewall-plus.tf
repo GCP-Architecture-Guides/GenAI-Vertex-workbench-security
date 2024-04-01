@@ -482,7 +482,7 @@ resource "null_resource" "fwp_endpoint_endpoint" {
   provisioner "local-exec" {
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
-gcloud alpha network-security firewall-endpoints create securevertex-${self.triggers.zone}-${self.triggers.random_id} --zone=${self.triggers.zone} --organization ${self.triggers.org_id}  --quiet --no-async
+gcloud network-security firewall-endpoints create securevertex-${self.triggers.zone}-${self.triggers.random_id} --zone=${self.triggers.zone} --organization ${self.triggers.org_id} --billing-project=${self.triggers.proj_id} --quiet --no-async
 gcloud config unset project
   EOT
   }
@@ -491,7 +491,7 @@ gcloud config unset project
     when = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
-gcloud alpha network-security firewall-endpoints delete securevertex-${self.triggers.zone}-${self.triggers.random_id} --zone=${self.triggers.zone} --organization ${self.triggers.org_id}  --quiet --no-async
+gcloud network-security firewall-endpoints delete securevertex-${self.triggers.zone}-${self.triggers.random_id} --zone=${self.triggers.zone} --organization ${self.triggers.org_id}  --quiet --no-async
 gcloud config unset project
   EOT
   }
@@ -512,10 +512,11 @@ resource "null_resource" "fwp_endpoint_association" {
 
   }
 
+
   provisioner "local-exec" {
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
-gcloud alpha network-security firewall-endpoint-associations create securevertex-association-${self.triggers.random_id} --zone ${self.triggers.zone} --network=${self.triggers.network_name} --endpoint securevertex-${self.triggers.zone}-${self.triggers.random_id} --organization ${self.triggers.org_id} --quiet --no-async
+gcloud network-security firewall-endpoint-associations create securevertex-association-${self.triggers.random_id} --zone ${self.triggers.zone} --network=${self.triggers.network_name} --endpoint securevertex-${self.triggers.zone}-${self.triggers.random_id} --organization ${self.triggers.org_id} --quiet --no-async
 gcloud config unset project
   EOT
   }
@@ -524,7 +525,7 @@ gcloud config unset project
     when = destroy
     command = <<EOT
 gcloud config set project ${self.triggers.proj_id}
-gcloud alpha network-security firewall-endpoint-associations delete securevertex-association-${self.triggers.random_id} --zone ${self.triggers.zone}  --quiet --no-async
+gcloud  network-security firewall-endpoint-associations delete securevertex-association-${self.triggers.random_id} --zone ${self.triggers.zone}  --quiet --no-async
 gcloud config unset project
   EOT
   }
